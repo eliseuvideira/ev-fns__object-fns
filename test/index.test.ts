@@ -1,22 +1,130 @@
-import { identity } from "../src/index";
+import {
+  pickKeys,
+  removeKeys,
+  removeUndefined,
+  toCamel,
+  toSnake,
+} from "../src/index";
 
-describe("identity", () => {
-  const cases = [
-    true,
-    false,
-    0,
-    1,
-    Math.random(),
-    "",
-    Date.now().toString(),
-    new Date(),
-    [],
-    {},
-  ];
+describe("removeKeys", () => {
+  it("removes keys", () => {
+    expect({
+      customerId: 1,
+      name: "customer",
+    }).toEqual(
+      removeKeys(
+        {
+          customerId: 1,
+          name: "customer",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        ["createdAt", "updatedAt"]
+      )
+    );
+  });
+});
 
-  it("is an identity function", () => {
-    expect.assertions(cases.length);
+describe("removeUndefined", () => {
+  it("removes keys with undefined values", () => {
+    expect({
+      $eq: { customerId: 1, name: "customer" },
+    }).toEqual(
+      removeUndefined({
+        $eq: { customerId: 1, name: "customer" },
+        $like: undefined,
+        $sort: undefined,
+      })
+    );
+  });
 
-    cases.forEach((value) => expect(identity(value)).toEqual(value));
+  it("keeps all keys if no undefined", () => {
+    expect({
+      customerId: 1,
+      name: "customer",
+    }).toEqual(
+      removeUndefined({
+        customerId: 1,
+        name: "customer",
+      })
+    );
+  });
+});
+
+describe("toCamel", () => {
+  it("parses snaked cased keys", () => {
+    expect({
+      customerId: 1,
+      name: "customer",
+      createdAt: new Date("2020-08-09T00:15:51Z"),
+      updatedAt: new Date("2020-08-09T00:15:51Z"),
+    }).toEqual(
+      toCamel({
+        customer_id: 1,
+        name: "customer",
+        created_at: new Date("2020-08-09T00:15:51Z"),
+        updated_at: new Date("2020-08-09T00:15:51Z"),
+      })
+    );
+  });
+
+  it("keep other keys intact", () => {
+    expect({
+      customerId: 1,
+      name: "customer",
+      createdAt: new Date("2020-08-09T00:15:51Z"),
+      updatedAt: new Date("2020-08-09T00:15:51Z"),
+    }).toEqual(
+      toCamel({
+        customerId: 1,
+        name: "customer",
+        createdAt: new Date("2020-08-09T00:15:51Z"),
+        updatedAt: new Date("2020-08-09T00:15:51Z"),
+      })
+    );
+  });
+});
+
+describe("toSnake", () => {
+  it("parses camel cased keys", () => {
+    expect({
+      customer_id: 1,
+      name: "customer",
+      created_at: new Date("2020-08-09T00:15:51Z"),
+      updated_at: new Date("2020-08-09T00:15:51Z"),
+    }).toEqual(
+      toSnake({
+        customerId: 1,
+        name: "customer",
+        createdAt: new Date("2020-08-09T00:15:51Z"),
+        updatedAt: new Date("2020-08-09T00:15:51Z"),
+      })
+    );
+  });
+
+  it("keep other keys intact", () => {
+    expect({
+      customer_id: 1,
+      name: "customer",
+      created_at: new Date("2020-08-09T00:15:51Z"),
+      updated_at: new Date("2020-08-09T00:15:51Z"),
+    }).toEqual(
+      toSnake({
+        customer_id: 1,
+        name: "customer",
+        created_at: new Date("2020-08-09T00:15:51Z"),
+        updated_at: new Date("2020-08-09T00:15:51Z"),
+      })
+    );
+  });
+});
+
+describe("pickKeys", () => {
+  it("picks only choosen keys", () => {
+    expect.assertions(2);
+
+    expect(pickKeys({ a: 1, b: 2, c: 3 }, ["a"])).toEqual({ a: 1 });
+
+    expect(pickKeys({ a: 1, b: 2, c: 3 }, ["a", "b"])).toEqual({ a: 1, b: 2 });
   });
 });

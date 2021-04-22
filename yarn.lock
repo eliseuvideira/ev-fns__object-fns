@@ -295,6 +295,11 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
+"@ev-fns/string-fns@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@ev-fns/string-fns/-/string-fns-0.1.1.tgz#a0246c4ec6ab9dcd59f3c9b8a4e4353bf6c079dd"
+  integrity sha512-g2L9YJnIqADVaIUxR2pnxBzLL42ZfogdzIcaJV8yhN0/T2PcpomdLTL9SqWG6AVuK6EDh+uTgqZwEGYjP+q+yA==
+
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@istanbuljs/load-nyc-config/-/load-nyc-config-1.1.0.tgz#fd3db1d59ecf7cf121e80650bb86712f9b55eced"
