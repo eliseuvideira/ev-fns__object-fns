@@ -1,6 +1,6 @@
 {
   "name": "@ev-fns/object-fns",
-  "version": "0.1.0",
+  "version": "0.2.2",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "author": "Eliseu Videira <eliseuvideira1@gmail.com>",
